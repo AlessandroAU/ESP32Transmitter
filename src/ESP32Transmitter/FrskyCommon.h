@@ -8,10 +8,6 @@
 uint8_t calData[48];
 //#endif
 
-
-
-
-
 //Serial protocol
 uint8_t sub_protocol = 0x01;
 //sub_protocol = 0x01;

@@ -1,9 +1,11 @@
 #include "HardwareConfig.h"
+#include "Tasks.h"
 //#include "FrskyD.ino"
 //#include "FrskyX.h"
 #include "FrskyCommon.h"
 #include "ADC.h"
-#include "Tasks.h"
+
+
 
 
 uint16_t ReadFrSky_2way();
@@ -41,7 +43,9 @@ void setup() {
 
   //Channel_data = 1750;
   //protocol_init();
+  remote_callback = ReadFrSky_2way; 
   StartSendTask();
+  
 
 }
 
@@ -60,10 +64,10 @@ void loop() {
   //    lastcallback = micros();
   //    //Serial.println(".");
 
-//    Channel_data[5] = Channel_data[5] + 1;
-//    if (Channel_data[5] == 2000) {
-//      Channel_data[5] = 0;
-//    }
+  //    Channel_data[5] = Channel_data[5] + 1;
+  //    if (Channel_data[5] == 2000) {
+  //      Channel_data[5] = 0;
+  //    }
 
   //Channel_data[5] = random(1000, 2000);
 

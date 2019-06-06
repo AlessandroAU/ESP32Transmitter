@@ -22,10 +22,6 @@ FilterBeLp2Slow FilterVBAT; //slow filter for VBAT readings
 enum RXADCfilter_ {LPF_10Hz, LPF_20Hz, LPF_50Hz, LPF_100Hz};
 RXADCfilter_ RXADCfilter = LPF_100Hz;
 
-//extern RXADCfilter_ RXADCfilter; //variable to hold which filter we use.
-
-//Adafruit_INA219 ina219; // A0+A1=GND
-
 uint32_t ADCstartMicros;
 uint32_t ADCfinishMicros;
 uint16_t ADCcaptime;
@@ -52,12 +48,9 @@ void ConfigureADC() {
   adc1_config_channel_atten(ADC5, ADC_ATTEN_6db);
   adc1_config_channel_atten(ADC6, ADC_ATTEN_6db);
 
-  //ina219.begin();
- // ReadVBAT_INA219();
-
 }
 
-void IRAM_ATTR nbADCread( void * pvParameters ) {
+void IRAM_ATTR ADCread( void * pvParameters ) {
 
   Serial.println("ADC Reading Task created...");
 
@@ -148,25 +141,14 @@ void IRAM_ATTR nbADCread( void * pvParameters ) {
         }
         break;
     }
-
-    //    switch (ADCVBATmode) {
-    //      case ADC_CH5:
-    //        VbatReadingSmooth = ADCvalues[4];
-    //        break;
-    //      case ADC_CH6:
-    //        VbatReadingSmooth = ADCvalues[5];
-    //        break;
-    //    }
-    //ADCcaptime = micros() - ADCstartMicros;
-    // Serial.println(ADCcaptime);
   }
 }
 
 
-void StartNB_ADCread() {
+void StartADCread() {
   Serial.println("Starting ADC reading task on core 1");
   xTaskCreatePinnedToCore(
-    nbADCread,   /* Function to implement the task */
+    ADCread,   /* Function to implement the task */
     "ADCreader", /* Name of the task */
     10000,      /* Stack size in words */
     NULL,       /* Task input parameter */
@@ -175,21 +157,6 @@ void StartNB_ADCread() {
     0);       /* Task handle. */
   //1);  /* Core where the task should run */
 }
-
-
-//void ReadVBAT_INA219() {
-//  if (ina219Timer.hasTicked()) {
-//    VbatReadingFloat = ina219.getBusVoltage_V() + (ina219.getShuntVoltage_mV() / 1000);
-//    //    Serial.print("VbatReading = ");
-//    //    Serial.println(VbatReadingFloat);
-//
-//    mAReadingFloat = ina219.getCurrent_mA();
-//    //Serial.print("mAReadingFloat = ");
-//    //Serial.println(mAReadingFloat);
-//
-//    ina219Timer.reset();
-//  }
-//}
 
 void IRAM_ATTR readADCs() {
   adcLoopCounter++;
@@ -204,12 +171,11 @@ void IRAM_ATTR readADCs() {
   }
 }
 
-
 void InitADCtimer() {
 
 
   xBinarySemaphore = xSemaphoreCreateBinary();
-  StartNB_ADCread();
+  StartADCread();
 
   timer = timerBegin(0, 80, true);
   timerAttachInterrupt(timer, &readADCs, true);
