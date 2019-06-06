@@ -2,6 +2,8 @@
 
 #include <SPI.h>
 
+#define EEPROM_VERSION_NUMBER 0
+
 #define ADC1 ADC1_CHANNEL_0
 #define ADC2 ADC1_CHANNEL_3
 #define ADC3 ADC1_CHANNEL_6
