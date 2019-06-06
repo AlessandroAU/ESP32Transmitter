@@ -8,12 +8,15 @@
 
 uint16_t ReadFrSky_2way();
 
-#define DEBUG_SERIAL 1
+#define DEBUG_SERIAL
 
 uint32_t lastcallback = 0;
 uint32_t nextcallbackdelay = 0;
 
-
+#ifdef DEBUG_SERIAL
+uint32_t nextDebugSerialPrintTime = 0;
+uint16_t intervalDebugSerialPrintTime = 200; // ms
+#endif
 
 void setup() {
 
@@ -21,20 +24,24 @@ void setup() {
   oledSetup();
 #endif
 
+#ifdef DEBUG_SERIAL
   Serial.begin(115200);
   Serial.println("Booting....");
+  
+#endif
+
   InitHardwarePins();
   InitADCtimer();
 
   //InitFailsafe();
   //option = FORCE_FRSKYX_TUNING;
 
-  RX_num = 2;
-  MProtocol_id_master = 0x12345678;
+  RX_num = 00;
+  MProtocol_id_master = ESP.getEfuseMac();//0x12345678;
 
   MProtocol_id = RX_num + MProtocol_id_master;
   set_rx_tx_addr(MProtocol_id);
-  //BIND_IN_PROGRESS;
+//  BIND_IN_PROGRESS;
 
   //initFrSky_2way();
   //initFrSkyX();
@@ -47,24 +54,21 @@ void setup() {
 
 
 void loop() {
-  //delay(10);
-  //  if (micros() > nextcallbackdelay + lastcallback) {
-  Channel_data[5] = ADCvalues[0];
-  //Serial.println(Channel_data[5]);
-  //    //    Serial.print(micros() - lastcallback);
-  //    //    Serial.print(" - ");
-  //    //    Serial.println(nextcallbackdelay);
-  //
-  //
-  //    nextcallbackdelay = (uint16_t)ReadFrSky_2way();
-  //    lastcallback = micros();
-  //    //Serial.println(".");
-
-//    Channel_data[5] = Channel_data[5] + 1;
-//    if (Channel_data[5] == 2000) {
-//      Channel_data[5] = 0;
-//    }
-
-  //Channel_data[5] = random(1000, 2000);
+  
+#ifdef DEBUG_SERIAL
+  if (nextDebugSerialPrintTime < millis()) {
+    nextDebugSerialPrintTime += intervalDebugSerialPrintTime;
+    
+    Serial.println(state);
+    
+    for (int i = 0; i < 7; i++) {
+      Serial.print("Channel_data ");
+      Serial.print(i);
+      Serial.print(" = ");
+      Serial.println(Channel_data[i]);
+    }
+    Serial.println("");
+  }
+#endif
 
 }
