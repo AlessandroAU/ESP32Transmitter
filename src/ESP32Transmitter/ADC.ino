@@ -143,10 +143,10 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
     }
 
     for (int i = 0; i < 4; i++) {
-      if (ADCvalues[i] >= ADCvaluesMid[i]) {
-        Channel_data[i] = (map(ADCvalues[i], ADCvaluesMid[i], ADCvaluesMax[i], 1500, 2000));
+      if (ADCvalues[i] >= EepromSettings.ADCvaluesMid[i]) {
+        Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMid[i], EepromSettings.ADCvaluesMax[i], 1500, 2000));
       } else {
-        Channel_data[i] = (map(ADCvalues[i], ADCvaluesMin[i], ADCvaluesMid[i], 1000, 1499));
+        Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMin[i], EepromSettings.ADCvaluesMid[i], 1000, 1499));
       }
     }
     

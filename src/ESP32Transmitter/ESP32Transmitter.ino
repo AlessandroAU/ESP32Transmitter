@@ -6,6 +6,7 @@
 #include "ADC.h"
 
 
+#include "settings_eeprom.h"
 
 
 uint16_t ReadFrSky_2way();
@@ -22,6 +23,8 @@ uint16_t intervalDebugSerialPrintTime = 200; // ms
 
 void setup() {
 
+  EepromSettings.setup();
+  
 #ifdef OLED
   oledSetup();
 #endif
