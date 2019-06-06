@@ -142,7 +142,7 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
         break;
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
       if (ADCvalues[i] >= EepromSettings.ADCvaluesMid[i]) {
         Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMid[i], EepromSettings.ADCvaluesMax[i], 1500, 2000));
       } else {
@@ -150,9 +150,9 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
       }
     }
     
-    Channel_data[4] = digitalRead(25) == HIGH ? 2000 : 1000;
-    Channel_data[5] = digitalRead(26) == HIGH ? 2000 : 1000;
-    Channel_data[6] = digitalRead(27) == HIGH ? 2000 : 1000;
+    Channel_data[5] = digitalRead(25) == HIGH ? 2000 : 1000;
+    Channel_data[6] = digitalRead(26) == HIGH ? 2000 : 1000;
+    Channel_data[7] = digitalRead(27) == HIGH ? 2000 : 1000;
 
     //    switch (ADCVBATmode) {
     //      case ADC_CH5:
