@@ -68,21 +68,21 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
     while (adcBusy(ADC1_GPIO)) {
       NOP();
     }
-    ADCReadingsRAW[0] = 2 * adcEnd(ADC1_GPIO); //don't know why 2x is needed here!
+    ADCReadingsRAW[0] = adcEnd(ADC1_GPIO);
 
     adcAttachPin(ADC2_GPIO);
     adcStart(ADC2_GPIO);
     while (adcBusy(ADC2_GPIO)) {
       NOP();
     }
-    ADCReadingsRAW[1] = 2 * adcEnd(ADC2_GPIO); //don't know why 2x is needed here!
-
+    ADCReadingsRAW[1] = adcEnd(ADC2_GPIO);
+    
     adcAttachPin(ADC3_GPIO);
     adcStart(ADC3_GPIO);
     while (adcBusy(ADC3_GPIO)) {
       NOP();
     }
-    ADCReadingsRAW[2] = 2 * adcEnd(ADC3_GPIO); //don't know why 2x is needed here!
+    ADCReadingsRAW[2] = adcEnd(ADC3_GPIO);
 
 
     adcAttachPin(ADC4_GPIO);
@@ -90,7 +90,7 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
     while (adcBusy(ADC4_GPIO)) {
       NOP();
     }
-    ADCReadingsRAW[3] = 2 * adcEnd(ADC4_GPIO); //don't know why 2x is needed here!
+    ADCReadingsRAW[3] = adcEnd(ADC4_GPIO);
 
 
     adcAttachPin(ADC5_GPIO);
@@ -98,7 +98,7 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
     while (adcBusy(ADC5_GPIO)) {
       NOP();
     }
-    ADCReadingsRAW[4] = 2 * adcEnd(ADC5_GPIO); //don't know why 2x is needed here!
+    ADCReadingsRAW[4] = adcEnd(ADC5_GPIO);
 
 
     adcAttachPin(ADC6_GPIO);
@@ -106,7 +106,7 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
     while (adcBusy(ADC6_GPIO)) {
       NOP();
     }
-    ADCReadingsRAW[5] = 2 * adcEnd(ADC6_GPIO); //don't know why 2x is needed here!
+    ADCReadingsRAW[5] = adcEnd(ADC6_GPIO);
 
     // Applying calibration
     //    if (!isCurrentlyCalibrating) {
@@ -141,6 +141,29 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
         }
         break;
     }
+
+    for (int i = 0; i < 4; i++) {
+      if (ADCvalues[i] >= ADCvaluesMid[i]) {
+        Channel_data[i] = (map(ADCvalues[i], ADCvaluesMid[i], ADCvaluesMax[i], 1500, 2000));
+      } else {
+        Channel_data[i] = (map(ADCvalues[i], ADCvaluesMin[i], ADCvaluesMid[i], 1000, 1499));
+      }
+    }
+    
+    Channel_data[4] = digitalRead(25) == HIGH ? 2000 : 1000;
+    Channel_data[5] = digitalRead(26) == HIGH ? 2000 : 1000;
+    Channel_data[6] = digitalRead(27) == HIGH ? 2000 : 1000;
+
+    //    switch (ADCVBATmode) {
+    //      case ADC_CH5:
+    //        VbatReadingSmooth = ADCvalues[4];
+    //        break;
+    //      case ADC_CH6:
+    //        VbatReadingSmooth = ADCvalues[5];
+    //        break;
+    //    }
+    //ADCcaptime = micros() - ADCstartMicros;
+    // Serial.println(ADCcaptime);
   }
 }
 

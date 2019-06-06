@@ -16,6 +16,10 @@
 #define ADC5_GPIO 32
 #define ADC6_GPIO 33
 
+#define TWO_POS_SWITCH_ONE 25
+#define TWO_POS_SWITCH_TWO 26
+#define TWO_POS_SWITCH_THREE 27
+  
 #define BEEPER 14
 
 #define MOSI 23
@@ -38,6 +42,10 @@
 
 void InitHardwarePins() {
 
+  pinMode(TWO_POS_SWITCH_ONE, INPUT_PULLDOWN);
+  pinMode(TWO_POS_SWITCH_TWO, INPUT_PULLDOWN);
+  pinMode(TWO_POS_SWITCH_THREE, INPUT_PULLDOWN);
+  
   pinMode(SCK, OUTPUT);
   pinMode(MOSI, OUTPUT);
   pinMode(MISO, INPUT);
