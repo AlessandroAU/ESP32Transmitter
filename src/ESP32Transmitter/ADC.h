@@ -7,8 +7,6 @@
 
 #define NumADCchannels 6
 
-uint32_t SampleArrayMillisOffset; //value that stores the offset of the global millis(); time so we can relate the array sample time to the the global time via this offset. // Not used for the moment.
-
 uint16_t ADC1readings[ADCmemLen];
 uint16_t ADC2readings[ADCmemLen];
 uint16_t ADC3readings[ADCmemLen];

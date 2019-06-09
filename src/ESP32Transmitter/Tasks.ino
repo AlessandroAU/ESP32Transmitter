@@ -7,7 +7,7 @@ void IRAM_ATTR HandleRFpacketSend_ISR()
   if (xHigherPriorityTaskWoken)
   {
     HandlePacketSend_StartTime_Prev = HandlePacketSend_StartTime;
-    portYIELD_FROM_ISR(); // this wakes up sample_timer_task immediately
+    portYIELD_FROM_ISR(); // this wakes up the task immediately
     HandlePacketSend_StartTime = micros();
   }
 }
@@ -43,11 +43,21 @@ void StartSendTask()
     20,                   /* Priority of the task. */
     &SendTask_handle); /* Task handle. */
 
-  initFrSky_2way();
-  state = FRSKY_BIND_DONE;
-  delay(200);
   timer_SendTask = timerBegin(1, 80, true);
   timerAttachInterrupt(timer_SendTask, &HandleRFpacketSend_ISR, true);
   timerAlarmWrite(timer_SendTask, 1000000, true);
   timerAlarmEnable(timer_SendTask);
+}
+
+void StartFrskyX() {
+  initFrSkyX();
+  remote_callback = ReadFrSkyX;
+}
+
+void StartFrskyD() {
+  initFrSky_2way();
+  remote_callback = ReadFrSky_2way;
+}
+
+void StartButtonTask() {
 }

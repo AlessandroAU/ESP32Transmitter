@@ -18,3 +18,6 @@ uint32_t HandlePacketSend_StartTime_Prev = 0;
 uint32_t CallBackTime_Prev = 0;
 
 void StartSendTask();
+
+void StartFrskyX();
+void StartFrskyD();

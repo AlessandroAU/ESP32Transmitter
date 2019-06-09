@@ -22,17 +22,29 @@
 #define TWO_POS_SWITCH_TWO 26
 #define TWO_POS_SWITCH_THREE 27
   
-#define BEEPER 14
+#define BEEPER 2
 
 #define MOSI 23
 #define MISO 19
 #define SCK 18
 
+#define KEYPAD_UP 14
+#define KEYPAD_DOWN 12
+#define KEYPAD_RIGHT 13
+#define KEYPAD_LEFT  15
+#define KEYPAD_ENTER 0
+
+#define OLED_SDA 20 
+#define OLED_SCL 21
+
+#define TRAINER_TX 1
+#define TRAINER_RX 3
 
 /////////CC2500///////////////////////////////////////////
 #define CC25_LNA_pin 2
 #define CC25_PA_pin 4
 #define CC25_CSn_pin  5
+
 #define CC25_CSn_active digitalWrite(CC25_CSn_pin,LOW)  //CS pin is active low
 #define CC25_CSn_inactive digitalWrite(CC25_CSn_pin,HIGH)
 #define CC25_PA_on digitalWrite(CC25_PA_pin,HIGH)
@@ -55,8 +67,6 @@ void InitHardwarePins() {
   pinMode(CC25_PA_pin, OUTPUT);
   pinMode(CC25_LNA_pin, OUTPUT);
 
-
-  //pinMode(MISO, INPUT);
   pinMode(BEEPER, OUTPUT);
   digitalWrite(BEEPER, LOW);
   digitalWrite(CC25_PA_pin, HIGH);
@@ -64,20 +74,4 @@ void InitHardwarePins() {
 
   SPI.setFrequency(5000000);
   SPI.begin(SCK, MISO, MOSI, -1);
-}
-
-void SPI_Write(uint8_t command)
-{
-  SPI.beginTransaction(SPISettings(5000000, MSBFIRST, SPI_MODE0));
-  SPI.transfer(command);
-  SPI.endTransaction();
-}
-
-uint8_t SPI_Read(void)
-{
-  uint8_t val;
-  SPI.beginTransaction(SPISettings(5000000, MSBFIRST, SPI_MODE0));
-  val = SPI.transfer(0x00);
-  SPI.endTransaction();
-  return val;
 }

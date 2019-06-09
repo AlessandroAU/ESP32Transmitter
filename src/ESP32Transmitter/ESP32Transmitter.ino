@@ -24,7 +24,7 @@ uint16_t intervalDebugSerialPrintTime = 200; // ms
 void setup() {
 
   EepromSettings.setup();
-  
+
 #ifdef OLED
   oledSetup();
 #endif
@@ -32,7 +32,7 @@ void setup() {
 #ifdef DEBUG_SERIAL
   Serial.begin(115200);
   Serial.println("Booting....");
-  
+
 #endif
 
   InitHardwarePins();
@@ -46,28 +46,21 @@ void setup() {
 
   MProtocol_id = RX_num + MProtocol_id_master;
   set_rx_tx_addr(MProtocol_id);
-//  BIND_IN_PROGRESS;
 
-  //initFrSky_2way();
-  //initFrSkyX();
+  StartFrskyD();
 
-  //Channel_data = 1750;
-  //protocol_init();
-  remote_callback = ReadFrSky_2way; 
-  StartSendTask();
-  
 
 }
 
 
 void loop() {
-  
+
 #ifdef DEBUG_SERIAL
   if (nextDebugSerialPrintTime < millis()) {
     nextDebugSerialPrintTime += intervalDebugSerialPrintTime;
-    
+
     Serial.println(state);
-    
+
     for (int i = 0; i < 7; i++) {
       Serial.print("Channel_data ");
       Serial.print(i);

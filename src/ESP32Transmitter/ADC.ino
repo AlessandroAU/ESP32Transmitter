@@ -10,13 +10,6 @@
 //#include "Timer.h"
 #include "UDP.h"
 
-//Timer ina219Timer = Timer(1000);
-
-//extern RXADCfilter_ RXADCfilter;
-//extern ADCVBATmode_ ADCVBATmode;
-//extern byte NumRecievers;
-
-
 FilterBeLp2Slow FilterVBAT; //slow filter for VBAT readings
 
 enum RXADCfilter_ {LPF_10Hz, LPF_20Hz, LPF_50Hz, LPF_100Hz};
@@ -41,12 +34,12 @@ void ConfigureADC() {
 
   adc1_config_width(ADC_WIDTH_BIT_10);
 
-  adc1_config_channel_atten(ADC1, ADC_ATTEN_6db);
-  adc1_config_channel_atten(ADC2, ADC_ATTEN_6db);
-  adc1_config_channel_atten(ADC3, ADC_ATTEN_6db);
-  adc1_config_channel_atten(ADC4, ADC_ATTEN_6db);
-  adc1_config_channel_atten(ADC5, ADC_ATTEN_6db);
-  adc1_config_channel_atten(ADC6, ADC_ATTEN_6db);
+  adc1_config_channel_atten(ADC1, ADC_ATTEN_11db);
+  adc1_config_channel_atten(ADC2, ADC_ATTEN_11db);
+  adc1_config_channel_atten(ADC3, ADC_ATTEN_11db);
+  adc1_config_channel_atten(ADC4, ADC_ATTEN_11db);
+  adc1_config_channel_atten(ADC5, ADC_ATTEN_11db);
+  adc1_config_channel_atten(ADC6, ADC_ATTEN_11db);
 
 }
 
