@@ -8,6 +8,7 @@
 
 #include "settings_eeprom.h"
 
+#define INC_BUTTONS // define if button (keypad button) code is to be included
 
 uint16_t ReadFrSky_2way();
 

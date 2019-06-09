@@ -28,12 +28,6 @@
 #define MISO 19
 #define SCK 18
 
-#define KEYPAD_UP 14
-#define KEYPAD_DOWN 12
-#define KEYPAD_RIGHT 13
-#define KEYPAD_LEFT  15
-#define KEYPAD_ENTER 0
-
 #define OLED_SDA 20 
 #define OLED_SCL 21
 

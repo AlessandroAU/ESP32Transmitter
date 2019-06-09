@@ -24,9 +24,7 @@ void IRAM_ATTR SendTask(void *param) {
     //Serial.println(HandlePacketSend_StartTime - HandlePacketSend_StartTime_Prev);
 
     int16_t callbacktime = remote_callback();
-
     CallBackTime_Prev = callbacktime;
-
     timerAlarmWrite(timer_SendTask, callbacktime, true);
 
   }
@@ -59,5 +57,16 @@ void StartFrskyD() {
   remote_callback = ReadFrSky_2way;
 }
 
+#ifdef INC_BUTTONS
+#include "buttons.h"
 void StartButtonTask() {
+
+  xTaskCreate(
+    sampleButtonsTask,          /* Task function. */
+    "ButtonTask",        /* String with name of task. */
+    512,                 /* Stack size in words. */
+    NULL,                 /* Parameter passed as input of the task */
+    1,                   /* Priority of the task. */
+    &SendTask_handle); /* Task handle. */
 }
+#endif
