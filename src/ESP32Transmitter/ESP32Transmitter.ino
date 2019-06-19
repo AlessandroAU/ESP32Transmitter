@@ -42,6 +42,8 @@ void setup() {
   //InitFailsafe();
   //option = FORCE_FRSKYX_TUNING;
 
+  BIND_IN_PROGRESS;
+
   RX_num = 00;
   MProtocol_id_master = ESP.getEfuseMac();//0x12345678;
 

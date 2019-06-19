@@ -50,11 +50,13 @@ void StartSendTask()
 void StartFrskyX() {
   initFrSkyX();
   remote_callback = ReadFrSkyX;
+  StartSendTask();
 }
 
 void StartFrskyD() {
   initFrSky_2way();
   remote_callback = ReadFrSky_2way;
+  StartSendTask();
 }
 
 #ifdef INC_BUTTONS
