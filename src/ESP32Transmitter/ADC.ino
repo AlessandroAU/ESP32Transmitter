@@ -13,7 +13,8 @@
 FilterBeLp2Slow FilterVBAT; //slow filter for VBAT readings
 
 enum RXADCfilter_ {LPF_10Hz, LPF_20Hz, LPF_50Hz, LPF_100Hz};
-RXADCfilter_ RXADCfilter = LPF_100Hz;
+//RXADCfilter_ RXADCfilter = LPF_100Hz;
+RXADCfilter_ RXADCfilter = LPF_50Hz;
 
 uint32_t ADCstartMicros;
 uint32_t ADCfinishMicros;
@@ -137,15 +138,40 @@ void IRAM_ATTR ADCread( void * pvParameters ) {
 
     for (int i = 0; i < 5; i++) {
       if (ADCvalues[i] >= EepromSettings.ADCvaluesMid[i]) {
-        Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMid[i], EepromSettings.ADCvaluesMax[i], 1500, 2000));
+        if (EepromSettings.reverseChannel[i]) {
+          Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMid[i], EepromSettings.ADCvaluesMax[i], 1500, 1000));
+        } else {
+          Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMid[i], EepromSettings.ADCvaluesMax[i], 1500, 2000));          
+        }
       } else {
-        Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMin[i], EepromSettings.ADCvaluesMid[i], 1000, 1499));
+        if (EepromSettings.reverseChannel[i]) {
+          Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMin[i], EepromSettings.ADCvaluesMid[i], 2000, 1499)); 
+        } else {
+          Channel_data[i] = (map(ADCvalues[i], EepromSettings.ADCvaluesMin[i], EepromSettings.ADCvaluesMid[i], 1000, 1499));         
+        }
       }
     }
-    
-    Channel_data[5] = digitalRead(25) == HIGH ? 2000 : 1000;
-    Channel_data[6] = digitalRead(26) == HIGH ? 2000 : 1000;
-    Channel_data[7] = digitalRead(27) == HIGH ? 2000 : 1000;
+
+    if (EepromSettings.reverseChannel[4]) {
+      Channel_data[4] = digitalRead(TWO_POS_SWITCH_TWO) == HIGH ? 1000 : 2000;
+    } else {
+      Channel_data[4] = digitalRead(TWO_POS_SWITCH_TWO) == HIGH ? 2000 : 1000;
+    }
+    if (EepromSettings.reverseChannel[5]) {
+      Channel_data[5] = digitalRead(TWO_POS_SWITCH_ONE) == HIGH ? 1000 : 2000;
+    } else {
+      Channel_data[5] = digitalRead(TWO_POS_SWITCH_ONE) == HIGH ? 2000 : 1000;
+    }
+    if (EepromSettings.reverseChannel[6]) {
+      Channel_data[6] = digitalRead(TWO_POS_SWITCH_TWO) == HIGH ? 1000 : 2000;
+    } else {
+      Channel_data[6] = digitalRead(TWO_POS_SWITCH_TWO) == HIGH ? 2000 : 1000;
+    }
+    if (EepromSettings.reverseChannel[7]) {
+      Channel_data[7] = digitalRead(TWO_POS_SWITCH_THREE) == HIGH ? 1000 : 2000;
+    } else {
+      Channel_data[7] = digitalRead(TWO_POS_SWITCH_THREE) == HIGH ? 2000 : 1000;
+    }
 
     //    switch (ADCVBATmode) {
     //      case ADC_CH5:
