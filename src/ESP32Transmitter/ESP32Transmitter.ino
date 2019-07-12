@@ -8,7 +8,7 @@
 
 #include "settings_eeprom.h"
 
-#define USE_BETAFLIGHT_BIND_INFO
+//#define USE_BETAFLIGHT_BIND_INFO // use bind info dumped from betaflight, adjust variables in FrskyCommon.h aswell. 
 
 #define INC_BUTTONS // define if button (keypad button) code is to be included
 
@@ -60,6 +60,8 @@ void setup() {
   set_rx_tx_addr(MProtocol_id);
 
   StartFrskyD();
+
+  BIND_IN_PROGRESS;
 
 
 }
