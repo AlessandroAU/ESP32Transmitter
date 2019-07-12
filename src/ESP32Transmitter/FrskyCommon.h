@@ -48,7 +48,8 @@ uint16_t packet_period;
 uint8_t  packet_count;
 uint8_t  packet_sent;
 uint8_t  packet_length;
-uint8_t  hopping_frequency[50];
+//uint8_t  hopping_frequency[50];
+uint8_t  hopping_frequency[50] = {0,130,25,155,50,180,75,205,100,230,125,20,150,45,175,70,200,95,225,120,15,145,40,170,65,195,92,222,115,10,140,35,165,60,190,85,215,110,5,135,30,160,55,185,80,210,105,0,0,0};
 uint8_t  *hopping_frequency_ptr;
 uint8_t  hopping_frequency_no = 0;
 uint8_t  rf_ch_num;
@@ -115,7 +116,9 @@ uint8_t sport_index = 0;
 // Channel value for FrSky (PPM is multiplied by 1.5)
 uint16_t convert_channel_frsky(uint8_t num)
 {
-  uint16_t val = Channel_data[num];
+//  uint16_t val = Channel_data[num];
+  uint16_t val = map(Channel_data[num], 1000, 2000, 226, 1824);
+  
   return ((val * 15) >> 4) + 1290;
 }
 
@@ -147,23 +150,28 @@ enum {
 
 void Frsky_init_hop(void)
 {
-  uint8_t val;
-  uint8_t channel = rx_tx_addr[0] & 0x07;
-  uint8_t channel_spacing = rx_tx_addr[1];
-  //Filter bad tables
-  if (channel_spacing < 0x02) channel_spacing += 0x02;
-  if (channel_spacing > 0xE9) channel_spacing -= 0xE7;
-  if (channel_spacing % 0x2F == 0) channel_spacing++;
-
-  hopping_frequency[0] = channel;
-  for (uint8_t i = 1; i < 50; i++)
-  {
-    channel = (channel + channel_spacing) % 0xEB;
-    val = channel;
-    if ((val == 0x00) || (val == 0x5A) || (val == 0xDC))
-      val++;
-    hopping_frequency[i] = i > 46 ? 0 : val;
-  }
+#ifdef USE_BETAFLIGHT_BIND_INFO
+////  set frsky_spi_bind_hop_data = 0,130,25,155,50,180,75,205,100,230,125,20,150,45,175,70,200,95,225,120,15,145,40,170,65,195,92,222,115,10,140,35,165,60,190,85,215,110,5,135,30,160,55,185,80,210,105,0,0,0
+//hopping_frequency[50] = {0,130,25,155,50,180,75,205,100,230,125,20,150,45,175,70,200,95,225,120,15,145,40,170,65,195,92,222,115,10,140,35,165,60,190,85,215,110,5,135,30,160,55,185,80,210,105,0,0,0};
+#else
+//  uint8_t val;
+//  uint8_t channel = rx_tx_addr[0] & 0x07;
+//  uint8_t channel_spacing = rx_tx_addr[1];
+//  //Filter bad tables
+//  if (channel_spacing < 0x02) channel_spacing += 0x02;
+//  if (channel_spacing > 0xE9) channel_spacing -= 0xE7;
+//  if (channel_spacing % 0x2F == 0) channel_spacing++;
+//
+//  hopping_frequency[0] = channel;
+//  for (uint8_t i = 1; i < 50; i++)
+//  {
+//    channel = (channel + channel_spacing) % 0xEB;
+//    val = channel;
+//    if ((val == 0x00) || (val == 0x5A) || (val == 0xDC))
+//      val++;
+//    hopping_frequency[i] = i > 46 ? 0 : val;
+//  }
+#endif
 }
 //#endif
 
