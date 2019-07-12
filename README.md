@@ -6,4 +6,4 @@ ESP32 Based RC transmitter, talks FRSKY D8 (D16 Buggy for now) using a CC2500 mo
 
 'Fevo' hardware, a modified turnigy evo by https://github.com/JyeSmith
 
-![3D Printed Prototype](img/fevo.jpg)
+![Jye's Fevo](img/fevo.jpg)
